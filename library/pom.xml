@@ -2,19 +2,81 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.github.myproject</groupId>
-  <artifactId>library</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <name>library</name>
-  <url>http://maven.apache.org</url>
+  <groupId>com.mapquest</groupId>
+  <artifactId>mapquest</artifactId>
+  <version>1.0</version>
+  <packaging>swc</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <flex.sdk.version>4.6.b.23201</flex.sdk.version>
+        <flex.mojos.maven.version>4.0-RC2</flex.mojos.maven.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <target.flash.player.version>11.1</target.flash.player.version>
+        <swf.version>13</swf.version>
+    </properties>
 
-  <dependencies>
+    <repositories>
+        <repository>
+            <id>flex-mojos-repository</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+        </repository>
+    </repositories>
+<pluginRepositories>
+        <pluginRepository>
+            <id>flex-mojos-repository</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+   <dependencies>
+	<dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>sparkskins</artifactId>
+            <version>${flex.sdk.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>spark</artifactId>
+            <version>${flex.sdk.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>mx</artifactId>
+            <version>${flex.sdk.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>flex-framework</artifactId>
+            <version>${flex.sdk.version}</version>
+            <type>pom</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.adobe.flex.framework</groupId>
+                    <artifactId>playerglobal</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>framework</artifactId>
+            <version>${flex.sdk.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>playerglobal</artifactId>
+            <version>${flex.sdk.version}</version>
+            <classifier>${target.flash.player.version}</classifier>
+            <type>swc</type>
+        </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -22,4 +84,36 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+
+   <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.flexmojos</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>${flex.mojos.maven.version}</version>
+                <extensions>true</extensions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.adobe.flex</groupId>
+                        <artifactId>compiler</artifactId>
+                        <version>${flex.sdk.version}</version>
+                        <type>pom</type>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <targetPlayer>${target.flash.player.version}</targetPlayer>
+                    <swfVersion>${swf.version}</swfVersion>
+                    <showWarnings>false</showWarnings>
+                    <optimize>true</optimize>
+                    <storepass></storepass>
+                    <debug>false</debug>
+                    <sourceFile>
+                        ./com/appsurfer/facebook/AppSurfer.mxml
+                    </sourceFile>
+                </configuration>
+
+            </plugin>
+        </plugins>
+    </build>
 </project>
